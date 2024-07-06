@@ -2,7 +2,6 @@ package com.alurachallenge.challenge_literatura.models;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 
 @Entity
 @Table(name = "libros")
@@ -28,7 +27,6 @@ public class Libro {
 
     public Libro(DatosLibros datosLibros) {
         this.titulo = datosLibros.titulo();
-        this.autor = datosLibros.autor().get(0).nombre();
         this.idioma = Idioma.fromString(datosLibros.idiomas().toString().split(",")[0].trim());
         this.numeroDescargas = datosLibros.numeroDescargas();
     }

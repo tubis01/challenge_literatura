@@ -1,10 +1,10 @@
 package com.alurachallenge.challenge_literatura.models;
 
 public enum Idioma {
-    ESPANIOL("es", "español"),
-    INGLES("en", "inglés"),
-    FRANCES("fr", "francés"),
-    PORTUGUES("pt", "portugués"),;
+    ES("es", "Español"),
+    EN("en", "Inglés"),
+    FR("fr", "Francés"),
+    PT("pt", "Portugués");
 
     private String idiomaApi;
     private String idioma;
@@ -16,11 +16,11 @@ public enum Idioma {
 
     public static Idioma fromString(String idioma) {
         for (Idioma i : Idioma.values()) {
-            if (i.idiomaApi.equals(idioma)) {
+            if (i.idiomaApi.equalsIgnoreCase(idioma)) {
                 return i;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Ningún idioma encontrado: " + idioma);
     }
 
     public static Idioma fromEspaniol(String idioma) {

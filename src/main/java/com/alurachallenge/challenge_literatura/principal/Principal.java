@@ -1,8 +1,8 @@
 package com.alurachallenge.challenge_literatura.principal;
 
-import com.alurachallenge.challenge_literatura.models.Datos;
-import com.alurachallenge.challenge_literatura.models.DatosLibros;
+import com.alurachallenge.challenge_literatura.models.*;
 import com.alurachallenge.challenge_literatura.repository.AutorRepository;
+import com.alurachallenge.challenge_literatura.repository.LibroRepository;
 import com.alurachallenge.challenge_literatura.service.ApiService;
 import com.alurachallenge.challenge_literatura.service.ConvertidorDatos;
 
@@ -11,18 +11,19 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
-    private static final String URL_BASE =  "https://gutendex.com/books/";
+    private static final String URL_BASE = "https://gutendex.com/books/";
     private final ApiService apiService = new ApiService();
     private final ConvertidorDatos convertidorDatos = new ConvertidorDatos();
     private final Scanner scanner = new Scanner(System.in);
 
 
-    private List<DatosLibros> libros ;
-    private AutorRepository autorRepository;
+    private final AutorRepository autorRepository;
+    private final LibroRepository libroRepository;
 
 
-    public Principal(AutorRepository autor) {
+    public Principal(AutorRepository autor, LibroRepository libro) {
         this.autorRepository = autor;
+        this.libroRepository = libro;
     }
 
     public void muestraMenu() {
@@ -68,45 +69,75 @@ public class Principal {
 
     }
 
-    private Datos getDatosLibro(){
-        System.out.println("Ingrese el titulo del libro");
-        String titulo = scanner.nextLine();
+    private Datos getDatosLibro(String titulo) {
         String url = URL_BASE + "?search=" + titulo.replace(" ", "+");
         String json = apiService.obtenerDatos(url);
-
-        // Imprime la respuesta de la API
-        System.out.println("Respuesta de la API: " + json);
-
         return convertidorDatos.obtenerDatos(json, Datos.class);
     }
 
 
     private void buscarLibroPorTitulo() {
+        System.out.println("Ingrese el titulo del libro");
+        String titulo = scanner.nextLine();
+        Datos datos = getDatosLibro(titulo);
 
-        Datos datos = getDatosLibro();
 
         Optional<DatosLibros> libroBuscado = datos.resultados().stream()
                 .filter(l -> l.titulo().toUpperCase().contains(l.titulo().toUpperCase()))
                 .findFirst();
 
-        if (libroBuscado.isPresent()) {
+//        if (libroBuscado.isPresent()) {
+//            DatosLibros datosLibro = libroBuscado.get();
+//            System.out.println("Libro encontrado");
+//            System.out.println(datosLibro);
+//
+//            Autor autor = new Autor();
+//            autor.setNombre(datosLibro.autor().get(0).nombre());
+//            autor.setFechaNacimiento(datosLibro.autor().get(0).fechaNacimiento());
+//            autor.setFechaMuerte(datosLibro.autor().get(0).fechaMuerte());
+//            Autor saveAutor = autorRepository.save(autor);
+//
+//            Libro libro = new Libro();
+//            libro.setTitulo(datosLibro.titulo());
+//            libro.setAutor(String.valueOf(autor.getNombre()));
+//            libro.setNumeroDescargas(datosLibro.numeroDescargas());
+//            libro.setAuthor(saveAutor);
+//
+//
+//            String idiomaApi = datosLibro.idiomas().isEmpty() ? "en" : datosLibro.idiomas().get(0);
+//            Idioma idiomaEnum = Idioma.fromString(idiomaApi);
+//            libro.setIdioma(Idioma.valueOf(idiomaEnum.name()));
+//
+//            libroRepository.save(libro);
+//        } else {
+//            System.out.println("Libro no encontrado");
+//        }
 
-            DatosLibros libroEncontrado= libroBuscado.get();
+        if(libroBuscado.isPresent()){
+            DatosLibros datosLibroEcontrado = libroBuscado.get();
             System.out.println("Libro encontrado");
-            System.out.println(libroEncontrado);
-            libros.add(libroEncontrado);
+            System.out.println(datosLibroEcontrado);
 
-        } else {
+            DatosAuthor autor = datosLibroEcontrado.autor().get(0);
+            Autor autor1 = new Autor(autor);
+            autorRepository.save(autor1);
+
+            Libro libro = new Libro(datosLibroEcontrado);
+            libroRepository.save(libro);
+
+        }else {
             System.out.println("Libro no encontrado");
+
         }
-
-
     }
+
+
+
 
 
     private void mostrarLibrosRegistrados() {
-        libros.forEach(System.out::println);
     }
+
     private void listarAutoresRegistrados() {
     }
 

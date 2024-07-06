@@ -30,6 +30,7 @@ public class Autor {
     }
 
 
+
     public Long getId() {
         return id;
     }
@@ -67,6 +68,17 @@ public class Autor {
     }
 
     public void setLibros(List<Libro> libros) {
+        libros.forEach(l -> l.setAuthor(this) );
         this.libros = libros;
+    }
+
+    @Override
+    public String toString() {
+        return "Autor{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", fechaMuerte=" + fechaMuerte +
+                '}';
     }
 }
