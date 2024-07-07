@@ -1,10 +1,10 @@
 package com.alurachallenge.challenge_literatura.models;
 
 public enum Idioma {
-    ES("es", "Español"),
-    EN("en", "Inglés"),
-    FR("fr", "Francés"),
-    PT("pt", "Portugués");
+    ES("[es]", "Español"),
+    EN("[en]", "Inglés"),
+    FR("[fr]", "Francés"),
+    PT("[pt]", "Portugués");
 
     private String idiomaApi;
     private String idioma;

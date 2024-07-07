@@ -81,48 +81,23 @@ public class Principal {
         String titulo = scanner.nextLine();
         Datos datos = getDatosLibro(titulo);
 
-
         Optional<DatosLibros> libroBuscado = datos.resultados().stream()
                 .filter(l -> l.titulo().toUpperCase().contains(l.titulo().toUpperCase()))
                 .findFirst();
-
-//        if (libroBuscado.isPresent()) {
-//            DatosLibros datosLibro = libroBuscado.get();
-//            System.out.println("Libro encontrado");
-//            System.out.println(datosLibro);
-//
-//            Autor autor = new Autor();
-//            autor.setNombre(datosLibro.autor().get(0).nombre());
-//            autor.setFechaNacimiento(datosLibro.autor().get(0).fechaNacimiento());
-//            autor.setFechaMuerte(datosLibro.autor().get(0).fechaMuerte());
-//            Autor saveAutor = autorRepository.save(autor);
-//
-//            Libro libro = new Libro();
-//            libro.setTitulo(datosLibro.titulo());
-//            libro.setAutor(String.valueOf(autor.getNombre()));
-//            libro.setNumeroDescargas(datosLibro.numeroDescargas());
-//            libro.setAuthor(saveAutor);
-//
-//
-//            String idiomaApi = datosLibro.idiomas().isEmpty() ? "en" : datosLibro.idiomas().get(0);
-//            Idioma idiomaEnum = Idioma.fromString(idiomaApi);
-//            libro.setIdioma(Idioma.valueOf(idiomaEnum.name()));
-//
-//            libroRepository.save(libro);
-//        } else {
-//            System.out.println("Libro no encontrado");
-//        }
 
         if(libroBuscado.isPresent()){
             DatosLibros datosLibroEcontrado = libroBuscado.get();
             System.out.println("Libro encontrado");
             System.out.println(datosLibroEcontrado);
 
+
             DatosAuthor autor = datosLibroEcontrado.autor().get(0);
             Autor autor1 = new Autor(autor);
             autorRepository.save(autor1);
 
             Libro libro = new Libro(datosLibroEcontrado);
+            libro.setAuthor(autor1);
+            libro.setAutor(autor1.getNombre());
             libroRepository.save(libro);
 
         }else {
