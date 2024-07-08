@@ -17,7 +17,7 @@ public class Autor {
     private Integer fechaMuerte;
 
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Libro> libros;
 
     public Autor() {
@@ -68,17 +68,20 @@ public class Autor {
     }
 
     public void setLibros(List<Libro> libros) {
-        libros.forEach(l -> l.setAuthor(this) );
         this.libros = libros;
     }
 
     @Override
     public String toString() {
-        return "Autor{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", fechaMuerte=" + fechaMuerte +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        System.out.println("-----------------");
+        sb.append("Autor: ").append(nombre).append("\n")
+                .append("Fecha de nacimiento: ").append(fechaNacimiento).append("\n")
+                .append("Fecha de muerte: ").append(fechaMuerte).append("\n")
+                .append("Libros: ").append("\n");
+        for(Libro libro : libros){
+            sb.append("-  ").append(libro.getTitulo()).append("\n");
+        }
+        return sb.toString();
     }
 }

@@ -6,8 +6,8 @@ public enum Idioma {
     FR("[fr]", "Francés"),
     PT("[pt]", "Portugués");
 
-    private String idiomaApi;
-    private String idioma;
+    private final String idiomaApi;
+    private final String idioma;
 
     Idioma(String idiomaApi, String idioma) {
         this.idiomaApi = idiomaApi;
