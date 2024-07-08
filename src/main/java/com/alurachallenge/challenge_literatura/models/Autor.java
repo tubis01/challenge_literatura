@@ -30,7 +30,6 @@ public class Autor {
     }
 
 
-
     public Long getId() {
         return id;
     }
@@ -79,7 +78,7 @@ public class Autor {
                 .append("Fecha de nacimiento: ").append(fechaNacimiento).append("\n")
                 .append("Fecha de muerte: ").append(fechaMuerte).append("\n")
                 .append("Libros: ").append("\n");
-        for(Libro libro : libros){
+        for (Libro libro : libros) {
             sb.append("-  ").append(libro.getTitulo()).append("\n");
         }
         return sb.toString();
